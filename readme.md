@@ -1,19 +1,99 @@
-# AI Placement Assistant 🚀
+# 🚀 AI Placement Assistant
 
-An AI-powered Placement Assistant built using **LangChain**, **FAISS**, **Hugging Face Embeddings**, **Groq LLMs**, **LangSmith**, and **Streamlit**. The application allows users to upload their resume and ask questions about their profile using Retrieval-Augmented Generation (RAG).
+An AI-powered career companion built to help students improve their resumes, optimize ATS performance, and prepare for technical interviews.
 
-## Features
+The application leverages Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and modern AI engineering practices to provide personalized career guidance from a single resume upload.
 
-* 📄 Upload Resume (PDF)
-* ✂️ Intelligent Text Chunking
-* 🔍 Semantic Search using FAISS Vector Store
-* 🤖 Resume Question Answering using Groq LLM
-* ⚡ Real-time Streaming Responses
-* 📊 LangSmith Tracing and Monitoring
-* 🧠 Retrieval-Augmented Generation (RAG)
-* 🎯 Context-Aware Resume Analysis
+---
 
-## Tech Stack
+## ✨ Features
+
+### 📄 Resume Analysis
+
+Get detailed feedback on your resume, including:
+
+* Strengths
+* Weaknesses
+* Missing sections
+* Formatting suggestions
+* Resume improvement recommendations
+
+---
+
+### 🎯 ATS Score Checker
+
+Evaluate your resume against ATS (Applicant Tracking Systems).
+
+**Outputs include:**
+
+* ATS Score (/100)
+* Missing Keywords
+* Skill Gaps
+* ATS Optimization Suggestions
+
+**Optional:** Paste a Job Description (JD) for a more realistic ATS evaluation.
+
+---
+
+### 🎤 Interview Question Generator
+
+Generate personalized interview questions based on your resume.
+
+Questions are categorized into:
+
+* Technical Questions
+* Project-Based Questions
+* CS Fundamentals
+* Behavioral Questions
+
+Each question includes:
+
+* Why the interviewer asks it
+* What a strong answer should contain
+
+---
+
+### 💬 Resume Q&A (In Progress)
+
+Ask questions about your resume using a Retrieval-Augmented Generation (RAG) pipeline.
+
+Example:
+
+> What project is most relevant for an AI Engineer role?
+
+> Which technologies have I used in backend development?
+
+---
+
+## 🏗️ Architecture
+
+```text
+                    Resume PDF
+                         │
+                         ▼
+                 PDF Processing
+                         │
+                         ▼
+                LangChain Documents
+                         │
+                         ▼
+                 Feature Selection
+        ┌────────────┬─────────────┬─────────────┐
+        ▼            ▼             ▼
+ Resume Analysis  ATS Checker  Interview Generator
+        │            │             │
+        └────────────┴─────────────┘
+                     │
+                     ▼
+                 Groq LLM
+                     │
+                     ▼
+                 AI Response
+```
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
 
@@ -22,52 +102,64 @@ An AI-powered Placement Assistant built using **LangChain**, **FAISS**, **Huggin
 ### LLM
 
 * Groq
-* GPT OSS 120B
+* GPT-OSS-120B
+
+### AI Framework
+
+* LangChain
 
 ### Embeddings
 
-* Hugging Face Embeddings
-* sentence-transformers/all-MiniLM-L6-v2
+* HuggingFace Embeddings
+* all-MiniLM-L6-v2
 
 ### Vector Database
 
 * FAISS
 
-### Observability
+### PDF Processing
+
+* PyPDFLoader
+
+### Monitoring & Observability
 
 * LangSmith
 
-### Framework
+---
 
-* LangChain
-
-## Project Workflow
+## 📂 Project Structure
 
 ```text
-Resume PDF
-    ↓
-PyPDFLoader
-    ↓
-RecursiveCharacterTextSplitter
-    ↓
-HuggingFace Embeddings
-    ↓
-FAISS Vector Store
-    ↓
-Retriever
-    ↓
-Groq LLM
-    ↓
-Generated Answer
+AI-Placement-Assistant/
+│
+├── app.py
+│
+├── tools/
+│   ├── resume_analysis.py
+│   ├── ats_checker.py
+│   ├── interview_questions.py
+│   └── resume_qa.py
+│
+├── utils/
+│   ├── pdf_loader.py
+│   ├── embeddings.py
+│   └── vectorstore.py
+│
+├── requirements.txt
+├── .env
+└── README.md
 ```
 
-## Installation
+---
 
-### Clone Repository
+## ⚙️ Installation
+
+### Clone the Repository
 
 ```bash
-git clone https://github.com/charrann12/Placement_Assistant.git
-cd Placement_Assistant
+git clone https://github.com/charrann12/AI-Placement-Assistant.git
+
+cd AI-Placement-Assistant
 ```
 
 ### Create Virtual Environment
@@ -76,7 +168,7 @@ cd Placement_Assistant
 python -m venv venv
 ```
 
-### Activate Environment
+### Activate Virtual Environment
 
 #### Mac/Linux
 
@@ -96,49 +188,89 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Environment Variables
+---
 
-Create a `.env` file in the root directory:
+## 🔑 Environment Variables
+
+Create a `.env` file in the project root.
 
 ```env
-GROQ_API_KEY=your_groq_api_key
-LANGCHAIN_API_KEY=your_langsmith_api_key
+langsmith_api_key=YOUR_LANGSMITH_API_KEY
 ```
 
-## Run the Application
+Groq API Key is entered directly through the Streamlit sidebar during runtime.
+
+---
+
+## ▶️ Running the Application
 
 ```bash
 streamlit run app.py
 ```
 
-## LangSmith Integration
+---
 
-The application uses LangSmith for tracing and observability.
+## 📸 Workflow
 
-Tracked Components:
+1. Enter Groq API Key
+2. Select a Feature
+3. Upload Resume
+4. Generate AI Insights
+5. Improve Resume & Placement Readiness
 
-* Retrieval Latency
-* LLM Latency
-* Retrieved Chunks
-* Prompt Execution
-* End-to-End RAG Pipeline
+---
 
-## Current Features
+## 🎯 Why This Project?
 
-* Resume Upload
-* PDF Parsing
-* Vector Embeddings
-* FAISS Retrieval
-* Streaming Responses
-* LangSmith Tracing
+Most students receive generic career advice.
 
-## Planned Enhancements
+This project aims to provide:
 
-* Conversational Memory
-* History-Aware Retriever
-* Hybrid Search (FAISS + BM25)
-* Resume ATS Score Analysis
+* Personalized Resume Feedback
+* ATS Optimization
+* Interview Preparation
+* AI-Driven Career Guidance
+
+using modern Generative AI workflows.
+
+---
+
+## 🚀 Future Enhancements
+
+* Skill Gap Analysis
+* Personalized DSA Roadmaps
+* History-Aware Resume Chat
+* LangGraph Agent Workflow
 * Job Description Matching
-* Interview Question Generator
-* Resume Improvement Suggestions
+* Resume Tailoring
+* Multi-Resume Comparison
+* Career Recommendation Engine
 
+---
+
+## 📊 Key Concepts Demonstrated
+
+* LLM Integration
+* Prompt Engineering
+* Retrieval-Augmented Generation (RAG)
+* Vector Search with FAISS
+* Document Processing
+* Streamlit Application Development
+* LangChain Pipelines
+* AI Product Architecture
+* Modular Software Design
+
+---
+
+## 👨‍💻 Author
+
+**Sai Charan Nethi**
+
+B.Tech Computer Science & Engineering
+National Institute of Technology Durgapur
+
+GitHub: https://github.com/charrann12
+
+---
+
+⭐ If you found this project useful, consider starring the repository.
