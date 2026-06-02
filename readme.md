@@ -1,4 +1,4 @@
-# 🚀 AI Placement Assistant
+# AI Placement Assistant
 
 An AI-powered career companion built to help students improve their resumes, optimize ATS performance, and prepare for technical interviews.
 
@@ -6,7 +6,7 @@ The application leverages Large Language Models (LLMs), Retrieval-Augmented Gene
 
 ---
 
-## ✨ Features
+## Features
 
 ### 📄 Resume Analysis
 
@@ -20,7 +20,7 @@ Get detailed feedback on your resume, including:
 
 ---
 
-### 🎯 ATS Score Checker
+### ATS Score Checker
 
 Evaluate your resume against ATS (Applicant Tracking Systems).
 
@@ -35,7 +35,7 @@ Evaluate your resume against ATS (Applicant Tracking Systems).
 
 ---
 
-### 🎤 Interview Question Generator
+### Interview Question Generator
 
 Generate personalized interview questions based on your resume.
 
@@ -53,7 +53,7 @@ Each question includes:
 
 ---
 
-### 💬 Resume Q&A (In Progress)
+### Resume Q&A (In Progress)
 
 Ask questions about your resume using a Retrieval-Augmented Generation (RAG) pipeline.
 
@@ -65,7 +65,7 @@ Example:
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
                     Resume PDF
@@ -93,7 +93,7 @@ Example:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -127,7 +127,7 @@ Example:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 AI-Placement-Assistant/
@@ -152,7 +152,7 @@ AI-Placement-Assistant/
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ### Clone the Repository
 
@@ -190,7 +190,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🔑 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the project root.
 
@@ -202,7 +202,7 @@ Groq API Key is entered directly through the Streamlit sidebar during runtime.
 
 ---
 
-## ▶️ Running the Application
+## Running the Application
 
 ```bash
 streamlit run app.py
@@ -210,7 +210,7 @@ streamlit run app.py
 
 ---
 
-## 📸 Workflow
+## Workflow
 
 1. Enter Groq API Key
 2. Select a Feature
@@ -220,7 +220,7 @@ streamlit run app.py
 
 ---
 
-## 🎯 Why This Project?
+## Why This Project?
 
 Most students receive generic career advice.
 
@@ -235,7 +235,7 @@ using modern Generative AI workflows.
 
 ---
 
-## 🚀 Future Enhancements
+## Future Enhancements
 
 * Skill Gap Analysis
 * Personalized DSA Roadmaps
@@ -248,7 +248,7 @@ using modern Generative AI workflows.
 
 ---
 
-## 📊 Key Concepts Demonstrated
+## Key Concepts Demonstrated
 
 * LLM Integration
 * Prompt Engineering
@@ -262,7 +262,7 @@ using modern Generative AI workflows.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Sai Charan Nethi**
 
