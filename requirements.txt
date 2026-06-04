@@ -11,3 +11,4 @@ langchain_groq
 langsmith
 pypdf
 faiss-gpu
+chromadb

@@ -5,10 +5,12 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
 from utils.pdf_loader import load_pdf
+from utils.vectorstore import create_vector_store
 
 from tools.resume_analysis import resume_analysis_tool
 from tools.ats_checker import ats_checker_tool
 from tools.interview_qns import interview_questions_tool
+from tools.resume_qa import resume_qa_tool
 
 load_dotenv()
 
@@ -49,12 +51,21 @@ if groq_api_key:
         for file in uploaded_resume:
             docs = load_pdf(file)
             documents.extend(docs)
-    
+
+        st.session_state.documents = documents
+        create_vector_store(documents)
+
     ## Resume Analysis tool calling 
 
     if feature == "Resume Analysis":
+        
         if st.button("Analyse Resume"):
-
+            
+            #Check whether the resume exist or not
+            documents = st.session_state.get("documents")
+            if not documents:
+                st.warning("Please upload your resume first.")
+                st.stop()
             result = resume_analysis_tool(
                 llm,
                 documents
@@ -68,10 +79,14 @@ if groq_api_key:
         jd = st.text_area("Paste the Job Description for better analysis")
         
         if st.button("Check Score"):
-
+            documents = st.session_state.get("documents")
+            if not documents:
+                st.warning("Please upload your resume first.")
+                st.stop()
             result = ats_checker_tool(
                 llm,
-                documents
+                documents,
+                jd
             )
 
             st.write(result)
@@ -81,12 +96,36 @@ if groq_api_key:
     elif feature == "Interview questions":
         target_role = st.text_input("Target role", placeholder = "Software Engineer, AI Engineer, ML Engineer...")
         if st.button("Ask questions"):
+            documents = st.session_state.get("documents")
+            if not documents:
+                st.warning("Please upload your resume first.")
+                st.stop()
             result = interview_questions_tool(
                 llm,
-                documents
+                documents,
+                target_role
             )
 
             st.write(result)
+
+    elif feature == "Resume Q&A":
+
+        question = st.text_input(
+            "Ask anything about your resume"
+        )
+
+        if st.button("Ask"):
+            documents = st.session_state.get("documents")
+            if not documents:
+                st.warning("Please upload your resume first.")
+                st.stop()
+            result = resume_qa_tool(
+                llm,
+                question
+            )
+
+            st.write(result)
+   
 
 
 else:
