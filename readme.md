@@ -1,180 +1,191 @@
-# AI Placement Assistant
+# 🚀 AI Placement Assistant
 
-An AI-powered career companion built to help students improve their resumes, optimize ATS performance, and prepare for technical interviews.
+An Agentic AI-powered Placement Preparation Platform that helps students analyze resumes, evaluate ATS readiness, prepare for interviews, and interact with their resumes through conversational AI.
 
-The application leverages Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), and modern AI engineering practices to provide personalized career guidance from a single resume upload.
+Built using **LangChain**, **LangGraph**, **Groq LLMs**, **FAISS**, **Streamlit**, and **LangSmith**.
 
 ---
 
-## Features
+## 🌟 Features
 
 ### 📄 Resume Analysis
 
-Get detailed feedback on your resume, including:
+* Upload a resume in PDF format.
+* Get detailed strengths, weaknesses, and improvement suggestions.
+* Structured feedback for better resume optimization.
 
-* Strengths
-* Weaknesses
-* Missing sections
-* Formatting suggestions
-* Resume improvement recommendations
+### 🎯 ATS Score Checker
+
+* Compare resumes against a Job Description (JD).
+* Generate:
+
+  * ATS Score
+  * Matching Keywords
+  * Missing Keywords
+  * Improvement Suggestions
+* Uses structured output with Pydantic models.
+
+### 🎤 Interview Question Generator
+
+* Generates personalized interview questions based on:
+
+  * Resume content
+  * Target role
+* Covers:
+
+  * Technical Questions
+  * Project-Based Questions
+  * CS Fundamentals
+  * Behavioral Questions
+* Categorized by difficulty level.
+
+### 💬 Resume Q&A (RAG)
+
+* Ask questions directly about your resume.
+* Uses Retrieval-Augmented Generation (RAG) with FAISS.
+* Retrieves relevant resume chunks before generating answers.
+
+### 🤖 Agent Mode
+
+An intelligent agent automatically selects the appropriate tool based on user intent.
+
+Available tools:
+
+* Resume Analysis Tool
+* ATS Checker Tool
+* Interview Question Generator Tool
+* Resume Q&A Tool
+
+The user can simply chat with the assistant without manually selecting a feature.
+
+### 🧠 Conversational Memory
+
+* Multi-turn conversations supported.
+* Chat history maintained across interactions.
+* LangGraph checkpointing used for memory management.
+
+### 📊 Observability with LangSmith
+
+* End-to-end tracing enabled.
+* Tool calls and agent reasoning can be monitored through LangSmith.
 
 ---
 
-### ATS Score Checker
-
-Evaluate your resume against ATS (Applicant Tracking Systems).
-
-**Outputs include:**
-
-* ATS Score (/100)
-* Missing Keywords
-* Skill Gaps
-* ATS Optimization Suggestions
-
-**Optional:** Paste a Job Description (JD) for a more realistic ATS evaluation.
-
----
-
-### Interview Question Generator
-
-Generate personalized interview questions based on your resume.
-
-Questions are categorized into:
-
-* Technical Questions
-* Project-Based Questions
-* CS Fundamentals
-* Behavioral Questions
-
-Each question includes:
-
-* Why the interviewer asks it
-* What a strong answer should contain
-
----
-
-### Resume Q&A (In Progress)
-
-Ask questions about your resume using a Retrieval-Augmented Generation (RAG) pipeline.
-
-Example:
-
-> What project is most relevant for an AI Engineer role?
-
-> Which technologies have I used in backend development?
-
----
-
-## Architecture
+## 🏗️ Architecture
 
 ```text
                     Resume PDF
                          │
                          ▼
-                 PDF Processing
+                 PDF Loader
                          │
                          ▼
-                LangChain Documents
+                Document Chunks
                          │
                          ▼
-                 Feature Selection
-        ┌────────────┬─────────────┬─────────────┐
-        ▼            ▼             ▼
- Resume Analysis  ATS Checker  Interview Generator
-        │            │             │
-        └────────────┴─────────────┘
-                     │
-                     ▼
-                 Groq LLM
-                     │
-                     ▼
-                 AI Response
+                     FAISS
+                         │
+                         ▼
+               Retrieval Layer
+                         │
+                         ▼
+                  Agent Layer
+                         │
+         ┌───────────────┼───────────────┐
+         ▼               ▼               ▼
+ Resume Analysis    ATS Checker    Interview Generator
+         │
+         ▼
+      Resume Q&A
+                         │
+                         ▼
+                 Groq LLM (GPT-OSS)
+                         │
+                         ▼
+                    Streamlit UI
 ```
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
+
+### LLM & Agent Framework
+
+* LangChain
+* LangGraph
+* Groq API
+* GPT-OSS-120B
+
+### Retrieval
+
+* FAISS
+* HuggingFace Embeddings
 
 ### Frontend
 
 * Streamlit
 
-### LLM
-
-* Groq
-* GPT-OSS-120B
-
-### AI Framework
-
-* LangChain
-
-### Embeddings
-
-* HuggingFace Embeddings
-* all-MiniLM-L6-v2
-
-### Vector Database
-
-* FAISS
-
-### PDF Processing
-
-* PyPDFLoader
-
-### Monitoring & Observability
+### Observability
 
 * LangSmith
 
+### Data Validation
+
+* Pydantic
+
+### Utilities
+
+* Python
+* dotenv
+
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```text
 AI-Placement-Assistant/
 │
 ├── app.py
+├── agent.py
 │
 ├── tools/
 │   ├── resume_analysis.py
 │   ├── ats_checker.py
-│   ├── interview_questions.py
-│   └── resume_qa.py
+│   ├── interview_qns.py
+│   ├── resume_qa.py
+│   └── agent_tools.py
+│
+├── schemas/
+│   ├── ats_schema.py
+│   └── interview_schema.py
 │
 ├── utils/
 │   ├── pdf_loader.py
-│   ├── embeddings.py
 │   └── vectorstore.py
 │
-├── requirements.txt
 ├── .env
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Installation
+## ⚙️ Installation
 
-### Clone the Repository
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/charrann12/AI-Placement-Assistant.git
-
 cd AI-Placement-Assistant
 ```
 
-### Create Virtual Environment
+### 2. Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-### Activate Virtual Environment
-
-#### Mac/Linux
-
-```bash
-source venv/bin/activate
-```
+Activate environment:
 
 #### Windows
 
@@ -182,27 +193,31 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-### Install Dependencies
+#### macOS/Linux
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 4. Configure Environment Variables
 
-## Environment Variables
-
-Create a `.env` file in the project root.
+Create a `.env` file:
 
 ```env
 langsmith_api_key=YOUR_LANGSMITH_API_KEY
 ```
 
-Groq API Key is entered directly through the Streamlit sidebar during runtime.
+Groq API Key is entered through the Streamlit sidebar.
 
 ---
 
-## Running the Application
+## ▶️ Run Application
 
 ```bash
 streamlit run app.py
@@ -210,59 +225,45 @@ streamlit run app.py
 
 ---
 
-## Workflow
+## 📸 Workflow
 
-1. Enter Groq API Key
-2. Select a Feature
-3. Upload Resume
-4. Generate AI Insights
-5. Improve Resume & Placement Readiness
-
----
-
-## Why This Project?
-
-Most students receive generic career advice.
-
-This project aims to provide:
-
-* Personalized Resume Feedback
-* ATS Optimization
-* Interview Preparation
-* AI-Driven Career Guidance
-
-using modern Generative AI workflows.
+1. Upload Resume
+2. Vector Store Creation
+3. Chat with Agent
+4. Agent Selects Appropriate Tool
+5. Tool Executes
+6. Response Returned to User
 
 ---
 
-## Future Enhancements
+## 🔥 Key Concepts Demonstrated
 
-* Skill Gap Analysis
-* Personalized DSA Roadmaps
-* History-Aware Resume Chat
-* LangGraph Agent Workflow
-* Job Description Matching
-* Resume Tailoring
-* Multi-Resume Comparison
-* Career Recommendation Engine
-
----
-
-## Key Concepts Demonstrated
-
-* LLM Integration
-* Prompt Engineering
 * Retrieval-Augmented Generation (RAG)
-* Vector Search with FAISS
-* Document Processing
-* Streamlit Application Development
-* LangChain Pipelines
-* AI Product Architecture
-* Modular Software Design
+* Tool Calling
+* Agentic AI Workflows
+* Conversational Memory
+* Structured Outputs
+* Vector Databases
+* Prompt Engineering
+* LLM Application Development
+* LangGraph Checkpointing
+* LangSmith Tracing
 
 ---
 
-## Author
+## 🎯 Future Improvements
+
+* Skill Gap Analyzer
+* Learning Roadmap Generator
+* Persistent Memory Storage
+* Resume Version Comparison
+* PDF Report Export
+* Mock Interview Simulation
+* Multi-Agent Architecture
+
+---
+
+## 👨‍💻 Author
 
 **Sai Charan Nethi**
 
@@ -273,4 +274,6 @@ GitHub: https://github.com/charrann12
 
 ---
 
-⭐ If you found this project useful, consider starring the repository.
+## ⭐ Support
+
+If you found this project useful, consider giving it a star on GitHub.
