@@ -1,4 +1,8 @@
-def ats_checker_tool(llm, documents, jd=None):
+from schemas.ats_schema import ATSReport
+
+
+
+def ats_checker(llm, documents, jd=None):
 
     resume_text = "\n".join(
         [doc.page_content for doc in documents]
@@ -35,6 +39,10 @@ def ats_checker_tool(llm, documents, jd=None):
 
         """
 
-    response =  llm.invoke(prompt)
-    
-    return response.content
+    structured_llm = llm.with_structured_output(
+        ATSReport
+    )
+
+    response = structured_llm.invoke(prompt)
+
+    return response

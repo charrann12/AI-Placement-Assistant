@@ -1,4 +1,4 @@
-def resume_analysis_tool(llm, documents):
+def resume_analysis(llm, documents):
 
     resume_text = "\n".join(
         [doc.page_content for doc in documents]

@@ -1,7 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from utils.vectorstore import get_retriever
 
-def resume_qa_tool(llm, question):
+def resume_qa(llm, question):
 
     retriever = get_retriever()
 
