@@ -3,6 +3,7 @@ from tools.ats_checker import ats_checker
 from tools.resume_analysis import resume_analysis
 from tools.resume_qa import resume_qa
 from tools.interview_qns import interview_questions
+from tools.skill_gap import skill_gap_analyser
 
 def create_tools(llm, documents):
 
@@ -33,14 +34,14 @@ Suggestions:
 - """ + "\n- ".join(report.suggestions)
 
 
-
 ## Resume Analysis tool
     @tool
-    def resume_analysis_agent_tool()->str:
+    def resume_analysis_agent_tool() -> str:
         """
         Analyze the uploaded resume and provide strengths,
         weaknesses and suggestions.
         """
+
         return resume_analysis(
             llm,
             documents
@@ -119,9 +120,40 @@ Expected answer: {q.expected_answer}
             question
         )
     
+    @tool
+    def skill_gap_agent_tool(jd: str)->str:
+        """
+        Analyse skill gaps between the uploaded resume
+        and a job description 
+        """
+
+        report = skill_gap_analyser(
+            llm,
+            documents,
+            jd
+        )
+
+        return f"""
+Matching Skills:
+-{"\n-".join(report.matching_skills)}
+
+Missing Skills:
+-{"\n-".join(report.missing_skills)}
+
+Priority Skills:
+-{"\n-".join(report.priority_skills)}
+
+Learning Roadmap:
+-{"\n-".join(report.learning_roadmap)}
+"""
+
+
     return [
         ats_checker_agent_tool,
         resume_analysis_agent_tool,
         interview_questions_agent_tool,
-        resume_qa_agent_tool
+        resume_qa_agent_tool,
+        skill_gap_agent_tool
     ]
+
+    

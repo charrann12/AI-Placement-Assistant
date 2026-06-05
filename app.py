@@ -2,29 +2,61 @@ import streamlit as st
 import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
+from agent import build_agent
 
+
+## From utilities
 from utils.pdf_loader import load_pdf
 from utils.vectorstore import create_vector_store
+from utils.text_splitter import get_text_splitter
 
+## From tools
 from tools.resume_analysis import resume_analysis
 from tools.ats_checker import ats_checker
 from tools.interview_qns import interview_questions
 from tools.resume_qa import resume_qa
 
 # for agent
-from agent import build_agent
 
 load_dotenv()
 
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("langsmith_api_key")
-os.environ["LANGCHAIN_PROJECT"] = "Placement-Assistant"
+#os.environ["LANGCHAIN_TRACING_V2"] = "true"
+#os.environ["LANGCHAIN_API_KEY"] = os.getenv("langsmith_api_key")
+#os.environ["LANGCHAIN_PROJECT"] = "Placement-Assistant"
+
+
+st.set_page_config(
+    page_title="AI Placement Assistant",
+    page_icon="🤖",
+    layout="wide"
+)
+
+
+st.markdown("""
+<style>
+
+.stChatMessage {
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+[data-testid="stChatMessageContent"] {
+    font-size: 16px;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-st.title("AI Placement Assistant")
+st.title("🚀 AI Placement Assistant")
+
+st.caption(
+    "• Analyze resumes • ATS Scoring • Skill Gap Analysis • Interview Preparation • AI Career Mentor"
+)
 
 ##
 # feature = st.selectbox(
@@ -48,21 +80,32 @@ if groq_api_key:
     )
     st.session_state.llm = llm
 
-    uploaded_resume = st.file_uploader(
-        "Upload resume",
-        type="pdf",
-        accept_multiple_files = True
-    )
+    with st.sidebar:
 
-    if uploaded_resume:
-        documents = []
+        uploaded_resume = st.file_uploader(
+            "Upload Resume",
+            type=["pdf"]
+        )
 
-        for file in uploaded_resume:
-            docs = load_pdf(file)
-            documents.extend(docs)
+        st.divider()
+
+        if st.button("🗑️ Clear Chat"):
+            st.session_state.messages = []
+            st.rerun()
+    
+    if "documents" not in st.session_state and uploaded_resume:
+        
+        documents = load_pdf(uploaded_resume)
+
+        splitter = get_text_splitter()
+        chunks = splitter.split_documents(documents)
+
+        with st.spinner("Processing Resume..."):
+            create_vector_store(chunks)
 
         st.session_state.documents = documents
-        create_vector_store(documents)
+
+        st.sidebar.success("✅ Resume Ready")
 
     ## Resume Analysis tool calling 
 
@@ -140,11 +183,10 @@ else:
 
 
 ## Agent Mode 
-st.divider()
-st.subheader("🤖 Agent Mode")
+import uuid
 
 if "thread_id" not in st.session_state:
-    st.session_state.thread_id = "placement_assistant"
+    st.session_state.thread_id = str(uuid.uuid4())
 
 config = {
     "configurable":{
@@ -152,11 +194,24 @@ config = {
     }
 }
 
-
+recent_messages = st.session_state.messages[-2:]
 documents = st.session_state.get("documents")
 
-
 if documents:
+
+    st.markdown("### 💡 Example Prompts")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.info("📄 Analyze my resume")
+        st.info("🎯 Compare my resume with a JD")
+
+    with col2:
+        st.info("🧠 What skills am I missing?")
+        st.info("🎤 Generate AI Engineer interview questions")
+
+    st.divider()
 
     for msg in st.session_state.messages:
         with st.chat_message(msg["role"]):
@@ -178,17 +233,25 @@ if documents:
         with st.chat_message("user"):
             st.markdown(agent_query)
 
-        agent = build_agent(
-            llm,
-            documents
-        )
+        if "agent" not in st.session_state:
 
-        response = agent.invoke(
-            {
-                "messages": st.session_state.messages
-            },
-            config=config
-        )
+            st.session_state.agent = build_agent(
+                llm,
+                documents
+            )
+
+        with st.spinner("🤖 Thinking..."):
+            response = st.session_state.agent.invoke(
+                {
+                    "messages": recent_messages + [
+                        {
+                            "role":"user",
+                            "content":agent_query
+                        }
+                    ]
+                },
+                config=config
+            )
 
         assistant_response = response["messages"][-1].content
 

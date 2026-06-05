@@ -23,9 +23,20 @@ def build_agent(llm, documents):
         - Resume analysis → analyze strengths and weaknesses
         - ATS checker → compare resume with job descriptions
         - Interview questions → generate role-specific interview questions
-        - Resume Q&A → answer questions about the uploaded resume
-        """,
-        checkpointer = memory
+        - Skill gap analysis requests -> skill_gap_agent_tool
+        - If the user asks ANYTHING about:
+            - projects
+            - skills
+            - experience
+            - education
+            - certifications
+            - achievements
+
+        ALWAYS call resume_qa_agent_tool.
+
+        Never answer from your own knowledge.
+        """
+        
     )
 
     return agent

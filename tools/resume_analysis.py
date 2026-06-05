@@ -7,24 +7,16 @@ def resume_analysis(llm, documents):
     prompt = f"""
     Analyze this resume.
 
-    Return the response in the following format:
+    Provide:
 
     ## Strengths
-    - Point 1
-    - Point 2
-
     ## Weaknesses
-    - Point 1
-    - Point 2
-
     ## Suggestions
-    - Point 1
-    - Point 2
 
     Resume:
-        {resume_text}
+    {resume_text}
     """
 
-    result =  llm.invoke(prompt)
+    response = llm.invoke(prompt)
 
-    return result.content
+    return response.content

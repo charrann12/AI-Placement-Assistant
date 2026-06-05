@@ -7,6 +7,13 @@ def resume_qa(llm, question):
 
     docs = retriever.invoke(question)
 
+    print("\nQUESTION:", question)
+    print("DOCS FOUND:", len(docs))
+
+    for i, doc in enumerate(docs):
+        print(f"\nDOC {i+1}")
+        print(doc.page_content[:500])
+
     context = "\n\n".join(
         doc.page_content for doc in docs 
     )
