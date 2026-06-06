@@ -1,5 +1,11 @@
 import streamlit as st
 import os
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+import streamlit as st
+from dotenv import load_dotenv
+
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from agent import build_agent
@@ -101,7 +107,10 @@ if groq_api_key:
         chunks = splitter.split_documents(documents)
 
         with st.spinner("Processing Resume..."):
-            create_vector_store(chunks)
+            st.write("Creating vector store...")
+            vector_store = create_vector_store(chunks)
+            st.session_state.vector_store = vector_store
+            st.write("Vector store saved")
 
         st.session_state.documents = documents
 
@@ -194,7 +203,6 @@ config = {
     }
 }
 
-recent_messages = st.session_state.messages[-2:]
 documents = st.session_state.get("documents")
 
 if documents:
@@ -223,6 +231,7 @@ if documents:
 
     if agent_query:
 
+        recent_messages = st.session_state.messages[-2:]
         st.session_state.messages.append(
             {
                 "role": "user",
@@ -237,23 +246,23 @@ if documents:
 
             st.session_state.agent = build_agent(
                 llm,
-                documents
+                documents,
+                st.session_state.vector_store
             )
 
         with st.spinner("🤖 Thinking..."):
             response = st.session_state.agent.invoke(
                 {
-                    "messages": recent_messages + [
-                        {
-                            "role":"user",
-                            "content":agent_query
-                        }
-                    ]
+                    "messages": recent_messages
                 },
                 config=config
             )
 
         assistant_response = response["messages"][-1].content
+
+
+
+
 
         st.session_state.messages.append(
             {

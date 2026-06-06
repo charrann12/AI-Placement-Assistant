@@ -5,19 +5,20 @@ from tools.resume_qa import resume_qa
 from tools.interview_qns import interview_questions
 from tools.skill_gap import skill_gap_analyser
 
-def create_tools(llm, documents):
+def create_tools(llm, documents, vector_store):
 
 ## ATS checker tool
     @tool
     def ats_checker_agent_tool(jd:str)->str:
         """
-        Compare the uploaded resume against a job description
-        and return ATS score, missing keywords and suggestions.
+        ALWAYS use this tool when the user provides a job description
+        and asks for ATS score, ATS compatibility, keyword matching,
+        resume comparison, or resume optimization.
         """
-
+        print("ats checker tool called")
         report =  ats_checker(
             llm,
-            documents,
+            vector_store,
             jd
         )
 
@@ -41,7 +42,7 @@ Suggestions:
         Analyze the uploaded resume and provide strengths,
         weaknesses and suggestions.
         """
-
+        print("Resume resume analysis tool called")
         return resume_analysis(
             llm,
             documents
@@ -63,10 +64,10 @@ Suggestions:
     Generates personalized interview questions
     using the uploaded resume.
     """
-
+        print("interview tool called")
         report = interview_questions(
             llm,
-            documents,
+            vector_store,
             target_role
         )
         
@@ -114,9 +115,11 @@ Expected answer: {q.expected_answer}
         projects, skills, experience, education,
         achievements, internships or resume details.
         """
+        print("Resume QA tool called")
 
         return resume_qa(
             llm,
+            vector_store,
             question
         )
     
@@ -126,10 +129,10 @@ Expected answer: {q.expected_answer}
         Analyse skill gaps between the uploaded resume
         and a job description 
         """
-
+        print("Resume skill gap tool called")
         report = skill_gap_analyser(
             llm,
-            documents,
+            vector_store,
             jd
         )
 

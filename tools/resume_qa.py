@@ -1,25 +1,26 @@
 from langchain_core.prompts import ChatPromptTemplate
 from utils.vectorstore import get_retriever
 
-def resume_qa(llm, question):
+def resume_qa(llm, vector_store,question):
+    
+    print("Step 1")
 
-    retriever = get_retriever()
+    retriever = vector_store.as_retriever(
+        search_kwargs={"k":5}
+    )
+
+    print("Step 2")
 
     docs = retriever.invoke(question)
 
-    print("\nQUESTION:", question)
-    print("DOCS FOUND:", len(docs))
-
-    for i, doc in enumerate(docs):
-        print(f"\nDOC {i+1}")
-        print(doc.page_content[:500])
-
+    print("Step 3")
+    
     context = "\n\n".join(
         doc.page_content for doc in docs 
     )
     prompt = ChatPromptTemplate.from_template(
         """
-        You are an expert placement mentor.
+        You are a QnA expert.
 
         Answer the question using ONLY the context provided.
 

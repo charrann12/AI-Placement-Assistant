@@ -1,9 +1,21 @@
 from schemas.interview_schema import InterviewReport
 
-def interview_questions(llm, documents, target_role):
-    resume_text = "\n".join(
-        [doc.page_content for doc in documents]
+
+def interview_questions(llm,vector_store,  target_role):
+
+    retriever = vector_store.as_retriever(
+        search_kwargs={"k":5}
     )
+
+    docs = vector_store.similarity_search(
+        target_role,
+        k = 10
+    )
+
+    resume_text = "\n\n".join(
+        doc.page_content for doc in docs
+    )
+
     prompt = f"""
     You are a hiring manager interviewing for a {target_role} role.
 

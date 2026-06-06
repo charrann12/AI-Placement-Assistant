@@ -1,43 +1,34 @@
 from schemas.ats_schema import ATSReport
 
 
+def ats_checker(llm, vector_store, jd):
 
-def ats_checker(llm, documents, jd=None):
-
-    resume_text = "\n".join(
-        [doc.page_content for doc in documents]
+    retriever = vector_store.as_retriever(
+        search_kwargs={"k": 8}
     )
 
-    if jd:
-        prompt = f"""
-        Compare resume against the job description.
+    docs = retriever.invoke(jd)
 
-        Give
-        - ATS score /100
-        - Matching keywords
-        - Missing keywords
-        - Suggestions 
+    resume_text = "\n\n".join(
+        doc.page_content for doc in docs
+    )
 
-        resume:
-        {resume_text}
+    prompt = f"""
+    Compare the candidate's resume against the job description.
 
-        job description:
-        {jd}
-        """
-    
-    else :
-        prompt = f"""
-        Evaluate resume against general ATS standards.
+    Provide:
 
-        Give
-        - ATS score /100
-        - Missing Sections
-        - Suggestions 
+    1. ATS Score (out of 100)
+    2. Matching Keywords
+    3. Missing Keywords
+    4. Actionable Suggestions
 
-        resume:
-        {resume_text}
+    Resume Context:
+    {resume_text}
 
-        """
+    Job Description:
+    {jd}
+    """
 
     structured_llm = llm.with_structured_output(
         ATSReport

@@ -1,16 +1,8 @@
-from langchain_classic.vectorstores import Chroma 
+from langchain_community.vectorstores import FAISS 
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_classic.schema import Document
 
 import os
-import shutil
-
-PERSIST_DIRECTORY = "chroma_db"
-
-
-if os.path.exists(PERSIST_DIRECTORY):
-    shutil.rmtree(PERSIST_DIRECTORY)
-
 
 
 def get_embeddings():
@@ -21,41 +13,25 @@ def get_embeddings():
     )
 
 def create_vector_store(chunks: list[Document]):
-    ## Create and persist Chroma DB from document chunks 
-
-    if os.path.exists(PERSIST_DIRECTORY):
-        shutil.rmtree(PERSIST_DIRECTORY)
+    ## Create document chunks
     embeddings = get_embeddings()
 
-    vector_store = Chroma.from_documents(
+    vector_store = FAISS.from_documents(
         documents = chunks,
-        embedding = embeddings,
-        persist_directory = PERSIST_DIRECTORY
+        embedding = embeddings
     )
 
     return vector_store
 
 
-def load_vector_store():
-    ## Load existing Chroma DB
-    embeddings = get_embeddings()
-    vector_store = Chroma(
-        embedding_function = embeddings,
-        persist_directory = PERSIST_DIRECTORY
-    )
 
-    return vector_store
+def get_retriever(vector_store):
 
-
-def get_retriever():
-
-    #Create retriever for Chroma DB
-
-    vector_store = load_vector_store()
-
+    #Create retriever
     retriever = vector_store.as_retriever(
-        search_type = "similarity",
-        search_kwargs={"k":3}
+        search_type = "mmr",
+        search_kwargs={"k":4,
+                       "fetch_k":10}
     )
     return retriever
 

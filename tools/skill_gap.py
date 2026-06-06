@@ -1,9 +1,15 @@
 from schemas.skill_gap_schema import SkillGapReport
 
-def skill_gap_analyser(llm, documents, jd):
+def skill_gap_analyser(llm,vector_store,  jd):
+
+    retriever = vector_store.as_retriever(
+        search_kwargs={"k":5}
+    )
+
+    docs = retriever.invoke(jd)
 
     resume_text = "\n".join(
-        [doc.page_content for doc in documents]
+        [doc.page_content for doc in docs]
     )
 
     prompt = f"""

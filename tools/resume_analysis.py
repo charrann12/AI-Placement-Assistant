@@ -1,4 +1,5 @@
 def resume_analysis(llm, documents):
+    print("Resume analysis tool called")
 
     resume_text = "\n".join(
         [doc.page_content for doc in documents]
@@ -18,5 +19,8 @@ def resume_analysis(llm, documents):
     """
 
     response = llm.invoke(prompt)
+
+    print("=== TOOL OUTPUT ===")
+    print(response.content[:500])
 
     return response.content
