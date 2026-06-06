@@ -3,9 +3,6 @@ import os
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-import streamlit as st
-from dotenv import load_dotenv
-
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from agent import build_agent
@@ -231,13 +228,15 @@ if documents:
 
     if agent_query:
 
-        recent_messages = st.session_state.messages[-2:]
+        
         st.session_state.messages.append(
             {
                 "role": "user",
                 "content": agent_query
             }
         )
+
+        recent_messages = st.session_state.messages[-5:]
 
         with st.chat_message("user"):
             st.markdown(agent_query)

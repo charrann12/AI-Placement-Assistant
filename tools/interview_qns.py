@@ -27,7 +27,7 @@ def interview_questions(llm,vector_store,  target_role):
     Generate:
 
     - 5 Easy Questions
-    - 10 Medium Questions
+    - 5 Medium Questions
     - 5 Hard Questions
 
     For every question provide:
