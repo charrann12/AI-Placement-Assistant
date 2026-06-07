@@ -125,7 +125,7 @@ pypdf==6.12.2
 PyPika==0.51.1
 pyproject_hooks==1.2.0
 python-dateutil==2.9.0.post0
-python-dotenv==1.2.2
+python-dotenv
 python-multipart==0.0.30
 PyYAML==6.0.3
 pyzmq==27.1.0
