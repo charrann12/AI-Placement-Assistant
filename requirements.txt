@@ -13,10 +13,9 @@ python-dotenv==1.2.2
 streamlit
 pypdf>=5.0.0
 
-torch
-torchvision
+torch==2.2.2
 
 sentence-transformers==5.1.0
-transformers==4.56.0
-
+transformers==4.55.4
+typing-extensions==4.15.0
 faiss-cpu==1.8.0
