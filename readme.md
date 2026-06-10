@@ -1,4 +1,4 @@
-# 🚀 AI Placement Assistant
+# AI Placement Assistant
 
 <p align="center">
   <img src="./assets/overview.png" alt="AI Placement Assistant Overview" width="100%">
@@ -91,7 +91,12 @@ Available tools:
 ---
 
 ## 📸 Application Demo
+### Project Architecture
+<p align="center">
+  <img src="./assets/architecture.png" width="95%">
+</p>
 
+---
 ### AI Placement Assistant Interface
 
 <p align="center">
