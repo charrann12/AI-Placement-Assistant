@@ -1,9 +1,12 @@
 from schemas.skill_gap_schema import SkillGapReport
 
+from utils.token_counter import count_tokens
+
+
 def skill_gap_analyser(llm,vector_store,  jd):
 
     retriever = vector_store.as_retriever(
-        search_kwargs={"k":5}
+        search_kwargs={"k":3}
     )
 
     docs = retriever.invoke(jd)
@@ -13,25 +16,29 @@ def skill_gap_analyser(llm,vector_store,  jd):
     )
 
     prompt = f"""
-    Compare the resume with the job description.
+    Analyze the resume against the job description.
 
-    Identify:
+    Return ONLY valid JSON using EXACTLY these keys:
 
-    1. Matching Skills
-    2. Missing Skills
-    3. Top Priority Skills 
-    4. Learning Roadmap 
+    {{
+        "matching_skills": [],
+        "missing_skills": [],
+        "priority_skills": [],
+        "learning_roadmap": []
+    }}
 
     Resume:
     {resume_text}
 
-    Job description:
+    Job Description:
     {jd}
-    """
+"""
+    print("Skill Gap Tokens:", count_tokens(prompt))
 
     structured_llm = llm.with_structured_output(
-        SkillGapReport
-    )
+    SkillGapReport,
+    method="json_mode"
+)
 
     response = structured_llm.invoke(prompt)
 

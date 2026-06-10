@@ -1,10 +1,11 @@
 from schemas.ats_schema import ATSReport
 
+from utils.token_counter import count_tokens
 
 def ats_checker(llm, vector_store, jd):
 
     retriever = vector_store.as_retriever(
-        search_kwargs={"k": 8}
+        search_kwargs={"k": 4}
     )
 
     docs = retriever.invoke(jd)
@@ -29,6 +30,7 @@ def ats_checker(llm, vector_store, jd):
     Job Description:
     {jd}
     """
+    print("ATS Tokens:", count_tokens(prompt))
 
     structured_llm = llm.with_structured_output(
         ATSReport

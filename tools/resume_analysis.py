@@ -1,3 +1,6 @@
+from utils.token_counter import count_tokens
+
+
 def resume_analysis(llm, documents):
     print("Resume analysis tool called")
 
@@ -17,10 +20,10 @@ def resume_analysis(llm, documents):
     Resume:
     {resume_text}
     """
-
+    print("Resume Analysis Tokens:", count_tokens(prompt))
     response = llm.invoke(prompt)
 
-    print("=== TOOL OUTPUT ===")
-    print(response.content[:500])
+    #print("=== TOOL OUTPUT ===")
+    #print(response.content[:500])
 
     return response.content
