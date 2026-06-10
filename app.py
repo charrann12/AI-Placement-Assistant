@@ -3,7 +3,7 @@ import os
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from agent import build_agent
 
