@@ -21,7 +21,7 @@ from tools.resume_qa import resume_qa
 
 # for agent
 
-load_dotenv()
+#load_dotenv()
 
 #os.environ["LANGCHAIN_TRACING_V2"] = "true"
 #os.environ["LANGCHAIN_API_KEY"] = os.getenv("langsmith_api_key")
