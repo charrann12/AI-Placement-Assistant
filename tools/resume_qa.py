@@ -1,19 +1,21 @@
 from langchain_core.prompts import ChatPromptTemplate
 from utils.vectorstore import get_retriever
 
+from utils.token_counter import count_tokens
+
 def resume_qa(llm, vector_store,question):
     
-    print("Step 1")
+    #print("Step 1")
 
     retriever = vector_store.as_retriever(
-        search_kwargs={"k":5}
+        search_kwargs={"k":3}
     )
 
-    print("Step 2")
+    #print("Step 2")
 
     docs = retriever.invoke(question)
 
-    print("Step 3")
+    #print("Step 3")
     
     context = "\n\n".join(
         doc.page_content for doc in docs 
@@ -36,6 +38,8 @@ def resume_qa(llm, vector_store,question):
     )
     chain = prompt|llm
 
+    print("Resume QA Context Tokens:", count_tokens(context))
+    
     response = chain.invoke(
         {
             "context":context,

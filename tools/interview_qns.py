@@ -1,5 +1,5 @@
 from schemas.interview_schema import InterviewReport
-
+from utils.token_counter import count_tokens
 
 def interview_questions(llm,vector_store,  target_role):
 
@@ -9,7 +9,7 @@ def interview_questions(llm,vector_store,  target_role):
 
     docs = vector_store.similarity_search(
         target_role,
-        k = 10
+        k = 4
     )
 
     resume_text = "\n\n".join(
@@ -26,9 +26,9 @@ def interview_questions(llm,vector_store,  target_role):
 
     Generate:
 
-    - 5 Easy Questions
-    - 5 Medium Questions
-    - 5 Hard Questions
+    - 3 Easy Questions
+    - 3 Medium Questions
+    - 3 Hard Questions
 
     For every question provide:
 
@@ -45,6 +45,7 @@ def interview_questions(llm,vector_store,  target_role):
 
     Tailor everything to a {target_role} position.
     """
+    print("Interview Tokens:", count_tokens(prompt))
 
     structured_llm = llm.with_structured_output(
         InterviewReport
