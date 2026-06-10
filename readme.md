@@ -1,5 +1,18 @@
 # 🚀 AI Placement Assistant
 
+<p align="center">
+  <img src="./assets/overview.png" alt="AI Placement Assistant Overview" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/LangChain-Agentic_AI-blue" />
+  <img src="https://img.shields.io/badge/LangGraph-Workflow-green" />
+  <img src="https://img.shields.io/badge/Groq-GPT--OSS--120B-orange" />
+  <img src="https://img.shields.io/badge/FAISS-Vector_DB-purple" />
+  <img src="https://img.shields.io/badge/LangSmith-Observability-black" />
+  <img src="https://img.shields.io/badge/Streamlit-Frontend-red" />
+</p>
+
 An Agentic AI-powered Placement Preparation Platform that helps students analyze resumes, evaluate ATS readiness, prepare for interviews, and interact with their resumes through conversational AI.
 
 Built using **LangChain**, **LangGraph**, **Groq LLMs**, **FAISS**, **Streamlit**, and **LangSmith**.
@@ -12,18 +25,29 @@ Built using **LangChain**, **LangGraph**, **Groq LLMs**, **FAISS**, **Streamlit*
 
 * Upload a resume in PDF format.
 * Get detailed strengths, weaknesses, and improvement suggestions.
-* Structured feedback for better resume optimization.
+* Receive structured feedback for resume optimization.
 
 ### 🎯 ATS Score Checker
 
-* Compare resumes against a Job Description (JD).
+* Compare resumes against Job Descriptions.
 * Generate:
 
   * ATS Score
   * Matching Keywords
   * Missing Keywords
   * Improvement Suggestions
-* Uses structured output with Pydantic models.
+* Powered by Pydantic structured outputs.
+
+### 📈 Skill Gap Analysis
+
+- Identifies missing skills by comparing the resume against a target role or job description.
+- Highlights:
+  - Missing Technical Skills
+  - Missing Tools & Frameworks
+  - Missing Domain Knowledge
+  - Priority Areas for Improvement
+- Generates actionable recommendations to improve employability.
+- Uses structured outputs powered by Pydantic.
 
 ### 🎤 Interview Question Generator
 
@@ -42,21 +66,20 @@ Built using **LangChain**, **LangGraph**, **Groq LLMs**, **FAISS**, **Streamlit*
 ### 💬 Resume Q&A (RAG)
 
 * Ask questions directly about your resume.
-* Uses Retrieval-Augmented Generation (RAG) with FAISS.
-* Retrieves relevant resume chunks before generating answers.
+* Uses Retrieval-Augmented Generation (RAG).
+* Retrieves relevant resume chunks using FAISS before generating answers.
 
 ### 🤖 Agent Mode
 
-An intelligent agent automatically selects the appropriate tool based on user intent.
+The LangGraph Agent automatically selects the correct tool based on user intent.
 
 Available tools:
 
 * Resume Analysis Tool
 * ATS Checker Tool
+* Skill Gap Analysis Tool
 * Interview Question Generator Tool
 * Resume Q&A Tool
-
-The user can simply chat with the assistant without manually selecting a feature.
 
 ### 🧠 Conversational Memory
 
@@ -64,79 +87,95 @@ The user can simply chat with the assistant without manually selecting a feature
 * Chat history maintained across interactions.
 * LangGraph checkpointing used for memory management.
 
-### 📊 Observability with LangSmith
 
-* End-to-end tracing enabled.
-* Tool calls and agent reasoning can be monitored through LangSmith.
+---
+
+## 📸 Application Demo
+
+### AI Placement Assistant Interface
+
+<p align="center">
+  <img src="./assets/ui-demo.png" width="95%">
+</p>
+
+The assistant automatically routes user requests to the appropriate tool and generates structured, role-specific outputs.
+
+---
+
+## 📊 LangSmith Tracing & Monitoring
+
+<p align="center">
+  <img src="./assets/langsmith-trace.png" width="95%">
+</p>
+
+LangSmith integration provides:
+
+* Agent execution tracing
+* Tool call inspection
+* Token usage monitoring
+* Latency analysis
+* Debugging and evaluation support
 
 ---
 
 ## 🏗️ Architecture
-
-```text
-                    Resume PDF
-                         │
-                         ▼
-                 PDF Loader
-                         │
-                         ▼
-                Document Chunks
-                         │
-                         ▼
-                     FAISS
-                         │
-                         ▼
-               Retrieval Layer
-                         │
-                         ▼
-                  Agent Layer
-                         │
-         ┌───────────────┼───────────────┐
-         ▼               ▼               ▼
- Resume Analysis    ATS Checker    Interview Generator
-         │
-         ▼
-      Resume Q&A
-                         │
-                         ▼
-                 Groq LLM (GPT-OSS)
-                         │
-                         ▼
-                    Streamlit UI
 ```
+                           Resume PDF
+                                │
+                                ▼
+                         PDF Processing
+                                │
+                                ▼
+                        Document Chunking
+                                │
+                                ▼
+                    HuggingFace Embeddings
+                                │
+                                ▼
+                         FAISS Vector DB
+                                │
+                                ▼
+                        Retrieval Layer
+                                │
+                                ▼
+                       LangGraph Agent
+                                │
+   ┌─────────────┬─────────────┬─────────────┬─────────────┐
+   ▼             ▼             ▼             ▼             ▼
+Resume      ATS Score     Skill Gap     Interview     Resume Q&A
+Analysis     Checker      Analysis      Generator       (RAG)
+                                │
+                                ▼
+                       Groq GPT-OSS-120B
+                                │
+                                ▼
+                          Streamlit UI
+```
+---
+
+## 📌 Resume Impact
+
+* Built an Agentic AI Placement Assistant using LangGraph and LangChain.
+* Implemented 5 specialized AI tools for Resume Analysis, ATS Evaluation, Skill Gap Analysis Interview Preparation, and Resume Q&A.
+* Developed a Retrieval-Augmented Generation (RAG) pipeline using FAISS and HuggingFace Embeddings.
+* Integrated structured outputs using Pydantic schemas for reliable responses.
+* Added conversational memory using LangGraph checkpointing.
+* Enabled observability and debugging with LangSmith tracing.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### LLM & Agent Framework
-
-* LangChain
-* LangGraph
-* Groq API
-* GPT-OSS-120B
-
-### Retrieval
-
-* FAISS
-* HuggingFace Embeddings
-
-### Frontend
-
-* Streamlit
-
-### Observability
-
-* LangSmith
-
-### Data Validation
-
-* Pydantic
-
-### Utilities
-
-* Python
-* dotenv
+| Category        | Technologies          |
+| --------------- | --------------------- |
+| LLM             | GPT-OSS-120B via Groq |
+| Agent Framework | LangChain, LangGraph  |
+| Vector Database | FAISS                 |
+| Embeddings      | HuggingFace           |
+| Frontend        | Streamlit             |
+| Validation      | Pydantic              |
+| Observability   | LangSmith             |
+| Language        | Python                |
 
 ---
 
@@ -163,6 +202,11 @@ AI-Placement-Assistant/
 │   ├── pdf_loader.py
 │   └── vectorstore.py
 │
+├── assets/
+│   ├── project-overview.png
+│   ├── ui-demo.png
+│   └── langsmith-trace.png
+│
 ├── .env
 ├── requirements.txt
 └── README.md
@@ -184,8 +228,6 @@ cd AI-Placement-Assistant
 ```bash
 python -m venv venv
 ```
-
-Activate environment:
 
 #### Windows
 
@@ -210,10 +252,12 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-langsmith_api_key=YOUR_LANGSMITH_API_KEY
+LANGCHAIN_API_KEY=YOUR_LANGSMITH_API_KEY
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_PROJECT=Placement-Assistant
 ```
 
-Groq API Key is entered through the Streamlit sidebar.
+Groq API Key can be entered directly from the Streamlit sidebar.
 
 ---
 
@@ -225,35 +269,38 @@ streamlit run app.py
 
 ---
 
-## 📸 Workflow
+## 🔄 Workflow
 
 1. Upload Resume
-2. Vector Store Creation
-3. Chat with Agent
-4. Agent Selects Appropriate Tool
-5. Tool Executes
-6. Response Returned to User
+2. PDF Parsing & Chunking
+3. Vector Store Creation
+4. User Query Sent to Agent
+5. Agent Selects Appropriate Tool
+6. Tool Executes
+7. Groq LLM Generates Response
+8. Structured Output Displayed
 
 ---
 
 ## 🔥 Key Concepts Demonstrated
 
 * Retrieval-Augmented Generation (RAG)
-* Tool Calling
 * Agentic AI Workflows
+* Tool Calling
 * Conversational Memory
 * Structured Outputs
 * Vector Databases
 * Prompt Engineering
-* LLM Application Development
-* LangGraph Checkpointing
+* LangGraph State Management
 * LangSmith Tracing
+* LLM Application Development
+* Skill Gap Detection
+* Resume-to-JD Semantic Comparison
 
 ---
 
 ## 🎯 Future Improvements
 
-* Skill Gap Analyzer
 * Learning Roadmap Generator
 * Persistent Memory Storage
 * Resume Version Comparison
@@ -276,4 +323,4 @@ GitHub: https://github.com/charrann12
 
 ## ⭐ Support
 
-If you found this project useful, consider giving it a star on GitHub.
+If you found this project useful, consider giving it a ⭐ on GitHub.
